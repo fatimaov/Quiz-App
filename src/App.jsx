@@ -40,14 +40,6 @@ function App() {
     setCurrentScreen('home');
   }
 
-  // retake Quiz function , it should not clear selected topic, but should reset score and total questions and set quiz status to active
-  function retakeQuiz() {
-    setScore(0);
-    setTotalQuestions(0);
-    setQuizStatus('active');
-    setCurrentScreen('quiz');
-  }
-
   if (currentScreen === 'quiz') {
     return (
       <QuizScreen
