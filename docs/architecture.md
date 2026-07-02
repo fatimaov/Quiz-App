@@ -56,6 +56,14 @@ project-root/
 |   |-- services/
 |   |   `-- quizApi.js
 |   |-- data/
+|   |   |-- fallbackQuestions/
+|   |   |   |-- css.js
+|   |   |   |-- html.js
+|   |   |   |-- javascript.js
+|   |   |   |-- python.js
+|   |   |   |-- react.js
+|   |   |   |-- typescript.js
+|   |   |   `-- index.js
 |   |   `-- quizTopics.js
 |   |-- utils/
 |   |   `-- shuffleArray.js
@@ -99,7 +107,7 @@ Each screen lives in its own folder (`ScreenName/`) containing the `.jsx` file, 
 ### Data
 
 - `quizTopics.js`: Stores the available quiz topics and their metadata.
-- Bundled fallback/mock questions may be stored locally in the UI layer or moved into a dedicated data module as the implementation is refined.
+- `fallbackQuestions/`: Stores bundled fallback/mock questions in one file per topic, plus an `index.js` export for lookup by topic.
 
 Each topic object contains the information required by the Home screen and Quiz screen, such as:
 
