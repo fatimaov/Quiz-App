@@ -68,7 +68,6 @@ function App() {
         score={score}
         totalQuestions={totalQuestions}
         onReturnHome={resetQuiz}
-        onRetakeQuiz={retakeQuiz}
       />
     );
   }

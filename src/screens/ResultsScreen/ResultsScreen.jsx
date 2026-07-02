@@ -26,9 +26,6 @@ function ResultsScreen({ score, totalQuestions, onReturnHome, onRetakeQuiz }) {
             <Button onClick={onReturnHome}>
               Return Home →
             </Button>
-            <Button variant="outline" onClick={onRetakeQuiz}>
-              Retake Quiz →
-            </Button>
           </div> 
         </main>
       </div>
