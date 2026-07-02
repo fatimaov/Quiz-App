@@ -18,6 +18,7 @@ Core architectural decisions:
 - `QuizScreen.jsx` owns the active quiz session UI and local interaction state
 - React state is the only state management solution
 - API access is isolated in `src/services/quizApi.js`
+- QuizAPI is the primary question source, with bundled fallback/mock questions used when API data is unavailable or unusable
 - Questions and answer options are randomized in the UI layer
 
 ## DEVELOPMENT ENVIRONMENT
@@ -35,76 +36,37 @@ Alternative package managers (Yarn, pnpm, Bun, etc.) are currently out of scope 
 
 ```txt
 project-root/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── AnswerOption/
-│   │   │   ├── AnswerOption.jsx
-│   │   │   ├── AnswerOption.module.css
-│   │   │   └── index.js
-│   │   ├── Button/
-│   │   │   ├── Button.jsx
-│   │   │   ├── Button.module.css
-│   │   │   └── index.js
-│   │   ├── ExitQuizModal/
-│   │   │   ├── ExitQuizModal.jsx
-│   │   │   ├── ExitQuizModal.module.css
-│   │   │   └── index.js
-│   │   ├── ExplanationBox/
-│   │   │   ├── ExplanationBox.jsx
-│   │   │   ├── ExplanationBox.module.css
-│   │   │   └── index.js
-│   │   ├── FeedbackMessage/
-│   │   │   ├── FeedbackMessage.jsx
-│   │   │   ├── FeedbackMessage.module.css
-│   │   │   └── index.js
-│   │   ├── QuestionCard/
-│   │   │   ├── QuestionCard.jsx
-│   │   │   ├── QuestionCard.module.css
-│   │   │   └── index.js
-│   │   ├── QuizSelector/
-│   │   │   ├── QuizSelector.jsx
-│   │   │   ├── QuizSelector.module.css
-│   │   │   └── index.js
-│   │   ├── ResultsCard/
-│   │   │   ├── ResultsCard.jsx
-│   │   │   ├── ResultsCard.module.css
-│   │   │   └── index.js
-│   │   ├── ScreenLayout/
-│   │   │   ├── ScreenLayout.jsx
-│   │   │   ├── ScreenLayout.module.css
-│   │   │   └── index.js
-│   │   └── TimerBar/
-│   │       ├── TimerBar.jsx
-│   │       ├── TimerBar.module.css
-│   │       └── index.js
-│   ├── screens/
-│   │   ├── HomeScreen/
-│   │   │   ├── HomeScreen.jsx
-│   │   │   ├── HomeScreen.module.css
-│   │   │   └── index.js
-│   │   ├── QuizScreen/
-│   │   │   ├── QuizScreen.jsx
-│   │   │   ├── QuizScreen.module.css
-│   │   │   └── index.js
-│   │   └── ResultsScreen/
-│   │       ├── ResultsScreen.jsx
-│   │       ├── ResultsScreen.module.css
-│   │       └── index.js
-│   ├── services/
-│   │   └── quizApi.js
-│   ├── data/
-│   │   └── quizTopics.js
-│   ├── utils/
-│   │   └── shuffleArray.js
-│   ├── styles/
-│   │   ├── globals.css
-│   │   └── variables.css
-│   ├── App.jsx
-│   └── main.jsx
-├── .env
-├── .env.example
-└── .gitignore
+|-- src/
+|   |-- assets/
+|   |-- components/
+|   |   |-- AnswerOption/
+|   |   |-- Button/
+|   |   |-- ExitQuizModal/
+|   |   |-- ExplanationBox/
+|   |   |-- FeedbackMessage/
+|   |   |-- QuestionCard/
+|   |   |-- QuizSelector/
+|   |   |-- ResultsCard/
+|   |   |-- ScreenLayout/
+|   |   `-- TimerBar/
+|   |-- screens/
+|   |   |-- HomeScreen/
+|   |   |-- QuizScreen/
+|   |   `-- ResultsScreen/
+|   |-- services/
+|   |   `-- quizApi.js
+|   |-- data/
+|   |   `-- quizTopics.js
+|   |-- utils/
+|   |   `-- shuffleArray.js
+|   |-- styles/
+|   |   |-- globals.css
+|   |   `-- variables.css
+|   |-- App.jsx
+|   `-- main.jsx
+|-- .env
+|-- .env.example
+`-- .gitignore
 ```
 
 ### Components
@@ -137,6 +99,7 @@ Each screen lives in its own folder (`ScreenName/`) containing the `.jsx` file, 
 ### Data
 
 - `quizTopics.js`: Stores the available quiz topics and their metadata.
+- Bundled fallback/mock questions may be stored locally in the UI layer or moved into a dedicated data module as the implementation is refined.
 
 Each topic object contains the information required by the Home screen and Quiz screen, such as:
 
@@ -326,11 +289,12 @@ The value remains `null` while the quiz is not finished.
 
 ### `isLoading`
 
-- Tracks question loading state
+- Tracks question loading state while the app resolves either API data or fallback/mock questions
 
 ### `error`
 
 - Stores loading or API errors
+- API-related errors should not block quiz play if fallback/mock questions are available
 
 ## SCREEN RESPONSIBILITIES
 
@@ -345,7 +309,8 @@ The value remains `null` while the quiz is not finished.
 
 - Displays the quiz title or app title, timer, progress bar, question indicator, current question, answer options, feedback, explanation, Next Question button, Exit Quiz button, and exit modal
 - Receives `selectedTopic` from `App.jsx`
-- Fetches, normalizes, and randomizes quiz questions
+- Resolves quiz questions for the selected topic
+- Uses QuizAPI as the primary source and falls back to bundled mock questions if the API is unavailable, errors, or returns no valid questions
 - Reports `totalQuestions` to `App.jsx`
 - Calls `incrementScore()` on each correct answer to update `score` in `App.jsx`
 - Manages question progression, answer validation, timer behavior, and exit confirmation
@@ -367,6 +332,7 @@ The value remains `null` while the quiz is not finished.
 - `QuizScreen.jsx` owns in-progress quiz interaction state
 - Presentational components receive data and callbacks via props
 - `quizApi.js` fetches and formats API data before the UI uses it
+- The quiz session can continue with bundled fallback/mock questions if API data is unusable
 
 ### Flow Between Layers
 
@@ -386,10 +352,12 @@ The value remains `null` while the quiz is not finished.
 1. The user lands on `HomeScreen.jsx`.
 2. The user selects a topic and starts the quiz.
 3. `App.jsx` stores `selectedTopic` and switches `currentScreen` to `quiz`.
-4. `QuizScreen.jsx` fetches questions for the selected topic.
-5. Questions are normalized, randomized, stored in `questions`, and counted in `totalQuestions`.
-6. The global timer starts only after questions load successfully.
-7. The first question appears with Next Question disabled.
+4. `QuizScreen.jsx` requests questions for the selected topic.
+5. If QuizAPI returns valid questions, they are normalized and used for the session.
+6. If QuizAPI is unavailable, errors, or returns no valid questions, bundled fallback/mock questions are used instead.
+7. The resolved questions are randomized, stored in `questions`, and counted in `totalQuestions`.
+8. The global timer starts only after questions are ready.
+9. The first question appears with Next Question disabled.
 
 ### Answer Validation
 
@@ -432,7 +400,7 @@ The quiz uses one global countdown timer for the entire session.
 
 Rules:
 
-- The timer starts when the quiz begins successfully
+- The timer starts when the quiz begins successfully with a valid question set
 - The timer remains visible during the quiz
 - The progress bar decreases with `remainingTime`
 - The timer continues running while confirmation modals are open
@@ -489,6 +457,7 @@ That service is responsible for:
 - Formatting API data into the app's internal shape
 - Handling API response errors
 - Rejecting invalid or incomplete question data
+- Signaling when fallback/mock questions should be used instead
 
 ### Internal Question Format
 
@@ -543,6 +512,7 @@ Notes
 - Questions are randomized once at quiz start
 - The randomized order stays fixed for that session
 - Questions are not removed or replaced during the session
+- Fallback/mock questions follow the same session rules as API questions
 
 ### Answer Randomization
 
@@ -581,11 +551,17 @@ The app should handle:
 - Missing explanation
 - Timer errors
 
-If loading fails:
+If the API response cannot provide a valid question set:
+
+- Use bundled fallback/mock questions
+- Continue into the quiz without blocking normal play
+- Start the timer only after the fallback/mock questions are ready
+
+If no valid question source is available at all:
 
 - Show an error message
 - Allow the user to return Home
-- Do not start the timer until questions load successfully
+- Do not start the timer
 
 ## MVP DECISIONS
 
@@ -595,6 +571,7 @@ If loading fails:
 - Use Vite
 - Use React state only
 - Use QuizAPI
+- Use bundled fallback/mock questions when API data is unavailable, errors, or is invalid
 - No React Router
 - No backend
 - No database
