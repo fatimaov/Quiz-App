@@ -2,22 +2,26 @@ import styles from './ResultsScreen.module.css';
 import logo from '../../assets/logo-desktop-on-light.svg';
 import Button from '../../components/Button';
 import ResultsCard from '../../components/ResultsCard';
-import ScreenLayout from '../../components/ScreenLayout/ScreenLayout';
+import ScreenLayout from '../../components/ScreenLayout';
+import ArrowRightIcon from '../../components/ArrowRightIcon';
 
 function ResultsScreen({ score, totalQuestions, onReturnHome }) {
   
   return (
     <ScreenLayout>
+      <header className={styles.header}>
       <img src={logo} alt="devquiz" className={styles.logo} />
-      <h1 className={styles.headerTitle}>Quiz Complete</h1>
+      </header>
 
-      <ResultsCard score={score} totalQuestions={totalQuestions} />
-
-      <div className={styles.actions}>
-        <Button onClick={onReturnHome}>
-          Return Home →
-        </Button>
-      </div>
+      <main className={styles.quizContent}> 
+        <h1 className={styles.headerTitle}>Quiz Complete</h1>
+        <ResultsCard score={score} totalQuestions={totalQuestions} />
+        <div className={styles.actions}>
+          <Button variant="primary" onClick={onReturnHome}>
+            Return Home <ArrowRightIcon />
+          </Button>
+        </div>
+      </main>
     </ScreenLayout>
   );
 }

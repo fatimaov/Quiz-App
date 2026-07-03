@@ -3,7 +3,7 @@
 .header {
     display: flex; 
     flex-direction: column;
-    align-items: flex-start; /* Align items to the start of the flex container */
+    align-items: center; /* Center children horizontally */
     width: 100%; /* Full width of the parent */
 }
 
