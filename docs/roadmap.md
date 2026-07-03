@@ -69,7 +69,18 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 5 — QUESTION SOURCE & API RESEARCH
+## PHASE 5 — FALLBACK QUESTIONS
+
+- Define the bundled fallback/mock question source for the MVP
+- Ensure each topic has a usable fallback question set
+- Match fallback question structure to the normalized app question shape
+- Use fallback/mock questions when the API is unavailable, returns an error, or provides no valid questions
+- Preserve the normal quiz flow when fallback questions are used
+- Start the timer only after the fallback/mock question set is ready
+
+---
+
+## PHASE 6 — QUESTION SOURCE & API RESEARCH
 
 - Confirm available quiz topics in QuizAPI
 - Check if QuizAPI provides enough questions per topic
@@ -83,7 +94,7 @@ Build simple functional screens without focusing on final styling.
 - Decide the explanation strategy for the MVP
 - Identify any required data transformations
 
-## PHASE 6 — API INTEGRATION
+## PHASE 7 — API INTEGRATION
 
 - Configure QuizAPI integration
 - Create `quizApi.js` service
@@ -92,10 +103,11 @@ Build simple functional screens without focusing on final styling.
 - Validate question structure
 - Handle loading state
 - Handle API errors
+- Trigger fallback/mock questions when no valid API question set is available
 
 ---
 
-## PHASE 7 — QUIZ SESSION SETUP
+## PHASE 8 — QUIZ SESSION SETUP
 
 - Load questions into QuizScreen
 - Store questions in local state
@@ -106,7 +118,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 8 — QUESTION & ANSWER RANDOMIZATION
+## PHASE 9 — QUESTION & ANSWER RANDOMIZATION
 
 - Randomize question order
 - Randomize answer order
@@ -115,7 +127,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 9 — ANSWER VALIDATION & FEEDBACK
+## PHASE 10 — ANSWER VALIDATION & FEEDBACK
 
 - Implement answer selection
 - Implement immediate validation
@@ -129,7 +141,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 10 — QUESTION PROGRESSION
+## PHASE 11 — QUESTION PROGRESSION
 
 - Implement Next Question functionality
 - Reset question state between questions
@@ -139,7 +151,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 11 — GLOBAL TIMER
+## PHASE 12 — GLOBAL TIMER
 
 - Implement countdown timer
 - Display remaining time
@@ -149,7 +161,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 12 — EXIT QUIZ FLOW
+## PHASE 13 — EXIT QUIZ FLOW
 
 - Create Exit Quiz modal
 - Implement Continue Quiz action
@@ -160,7 +172,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 13 — RESULTS SCREEN
+## PHASE 14 — RESULTS SCREEN
 
 - Display score
 - Display score as correct answers / total questions
@@ -171,7 +183,7 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 14 — FINAL UI & STYLING
+## PHASE 15 — FINAL UI & STYLING
 
 - Create CSS variables
 - Apply color palette
@@ -187,10 +199,11 @@ Build simple functional screens without focusing on final styling.
 
 ---
 
-## PHASE 15 — TESTING & REFINEMENT
+## PHASE 16 — TESTING & REFINEMENT
 
 - Test full quiz flow
 - Test API integration
+- Test fallback/mock question flow
 - Test score calculation
 - Test question randomization
 - Test answer randomization

@@ -29,13 +29,14 @@ Initial categories:
 - Python
 - TypeScript
 
-Questions are fetched from QuizAPI based on the selected category.
+Questions are fetched from QuizAPI based on the selected category when available.
+If the API is unavailable, returns an error, or provides no valid questions, the app falls back to bundled mock questions for that topic so the quiz can still start normally.
 
 ### QUIZ FLOW
 
 - User selects a quiz topic.
 - User starts the quiz.
-- A global countdown timer starts.
+- A global countdown timer starts after valid questions are ready.
 - Questions are displayed one at a time.
 - User selects an answer.
 - The answer is immediately validated.
@@ -57,7 +58,7 @@ Questions are fetched from QuizAPI based on the selected category.
 ### GLOBAL TIMER
 
 - A single countdown timer applies to the entire quiz.
-- The timer starts when the quiz begins.
+- The timer starts when the quiz begins with either API questions or fallback/mock questions.
 - The timer remains visible during the quiz.
 - A progress bar is linked to the timer and represents the remaining quiz time.
 - As time decreases, the progress bar decreases.
@@ -228,6 +229,7 @@ If confirmed:
 - QuizAPI
 - Questions fetched directly from the frontend
 - QuizAPI key stored in environment variables
+- Bundled fallback/mock questions are used when QuizAPI is unavailable or returns unusable data
 
 ### STATE MANAGEMENT
 React state manages:
@@ -247,6 +249,7 @@ React state manages:
 
 - Topic selection
 - QuizAPI integration
+- Fallback/mock question support for API failure, API errors, and empty invalid responses
 - One-question-at-a-time flow
 - Global quiz timer
 - Timer progress bar
