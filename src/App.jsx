@@ -4,10 +4,10 @@ import QuizScreen from './screens/QuizScreen';
 import ResultsScreen from './screens/ResultsScreen';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState("home");
+  const [currentScreen, setCurrentScreen] = useState("home"); 
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [score, setScore] = useState(0);
-  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [score, setScore] = useState(0); 
+  const [totalQuestions, setTotalQuestions] = useState(0); 
   const [quizStatus, setQuizStatus] = useState('idle');
 
   function startQuiz() {
