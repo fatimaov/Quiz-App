@@ -62,3 +62,11 @@
 }
 
 
+@media (max-width: 768px){
+  .secondary {
+    width: auto; 
+    padding: 0; 
+    font-size: var(--fs-sm);
+    text-align: right; 
+  }
+}
