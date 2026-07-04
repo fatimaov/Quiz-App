@@ -4,7 +4,14 @@
     display: flex; 
     align-items: center; /* Center children vertically */
     width: 100%; /* Full width of the parent */
+
+    /* mobile styling for header */ 
+    @media (max-width: 768px){
+        flex-direction: column; /* Stack children vertically on smaller screens */
+    }
 }
+
+
 
 .logo{
     height: 44px; 
