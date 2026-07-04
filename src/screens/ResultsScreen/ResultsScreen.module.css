@@ -2,8 +2,7 @@
 
 .header {
     display: flex; 
-    flex-direction: column;
-    align-items: center; /* Center children horizontally */
+    align-items: center; /* Center children vertically */
     width: 100%; /* Full width of the parent */
 }
 
@@ -36,12 +35,10 @@
     flex-direction: row; /* Side by side on desktop */
     gap: var(--space-4); /* 16px gap between children */
     width: 100%; /* Full width of the parent */
+    justify-content: center; /* Center children horizontally */
 
     @media (max-width: 768px){
         flex-direction: column; /* Stack children vertically on smaller screens */
     }
 }
 
-.actions > * {
-    flex: 1; /* Equal width buttons when side by side */
-}
