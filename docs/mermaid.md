@@ -55,8 +55,10 @@ flowchart TD
     AM --> AN{Results state}
     AN -- Completed quiz --> AO[Show final score<br/>Show completed status message<br/>Show performance feedback]
     AN -- Timer expired --> AP[Show final score<br/>Show time expired status message<br/>Show performance feedback]
-    AO --> AQ[User clicks Return Home]
+    AO --> AQ{User action}
     AP --> AQ
-    AQ --> AR[Reset app state]
+    AQ -- Return Home --> AR[Reset app state<br/>Clear selected topic<br/>Reset score and totals<br/>Set quizStatus to null<br/>Return Home Screen]
+    AQ -- Retake Quiz --> AS[Reset session state for same topic<br/>Reset score and totals<br/>Set quizStatus to null<br/>Switch to Quiz Screen]
     AR --> B
+    AS --> F
 ```
