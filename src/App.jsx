@@ -40,6 +40,14 @@ function App() {
     setCurrentScreen('home');
   }
 
+  // retake quiz function could be added here if needed, which would reset the score and total questions but keep the selected topic.
+  function retakeQuiz() {
+    setScore(0);
+    setTotalQuestions(0);
+    setQuizStatus('active');
+    setCurrentScreen('quiz');
+  }
+
   if (currentScreen === 'quiz') {
     return (
       <QuizScreen
@@ -60,6 +68,7 @@ function App() {
         score={score}
         totalQuestions={totalQuestions}
         onReturnHome={resetQuiz}
+        onRetakeQuiz={retakeQuiz}
       />
     );
   }

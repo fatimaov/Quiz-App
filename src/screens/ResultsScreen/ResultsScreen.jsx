@@ -5,7 +5,7 @@ import ResultsCard from '../../components/ResultsCard';
 import ScreenLayout from '../../components/ScreenLayout';
 import ArrowRightIcon from '../../components/ArrowRightIcon';
 
-function ResultsScreen({ score, totalQuestions, onReturnHome }) {
+function ResultsScreen({ score, totalQuestions, onReturnHome, onRetakeQuiz }) {
   
   return (
     <ScreenLayout>
@@ -19,6 +19,9 @@ function ResultsScreen({ score, totalQuestions, onReturnHome }) {
         <div className={styles.actions}>
           <Button variant="primary" onClick={onReturnHome}>
             Return Home <ArrowRightIcon />
+          </Button>
+          <Button variant="secondary" onClick={onRetakeQuiz}>
+            Retake Quiz <ArrowRightIcon />
           </Button>
         </div>
       </main>
