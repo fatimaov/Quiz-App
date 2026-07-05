@@ -1,7 +1,18 @@
 import styles from './ResultsCard.module.css';
+import React, { useState, useEffect } from 'react';
 
 function ResultsCard({ score, totalQuestions }) {
   const percentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+  // use state for animated percentage ring
+  const [animatedPercentage, setAnimatedPercentage] = useState(0); 
+  // on mount , update the state to the real percentage , using requestAnimationFrame , so browser paints 0% first 
+  // and then animates to the real percentage
+  useEffect(() => {
+    const animationFrame = requestAnimationFrame(() => {
+      setAnimatedPercentage(percentage);
+    });
+    return () => cancelAnimationFrame(animationFrame);
+  }, [percentage]);
 
     // hardcoding for now, but potentially could be dynamic based on quiz category and score percentage
   let resultTitle, resultDescription;
@@ -22,7 +33,7 @@ function ResultsCard({ score, totalQuestions }) {
   return (
     <div className={styles.resultsCard}>
             <div className={styles.scoreCard}>
-                <div className={styles.scoreRing}  style={{ '--score-pct': `${Math.min(percentage, 100)}%` }}/> 
+                <div className={styles.scoreRing}  style={{ '--score-pct': `${Math.min(animatedPercentage, 100)}%` }}/> 
                 <div className={styles.scoreRingMask} />
                 <div className={styles.scoreEllipseOutsideBorder} />
                 <div className={styles.scoreEllipseInsideBorder} />

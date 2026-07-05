@@ -7,6 +7,15 @@
     width: 100%; /* Full width of the parent */
 }
 
+/* Score Ring animation */ 
+/* browsers won't interpolate a conic gradient's custom property, in a
+/ * conic gradient unless it's registrared with an @property and given an expicit type */
+@property --score-pct {
+    syntax: '<percentage>'; /* Define the syntax for the custom property */
+    inherits: false; /* Do not inherit the property */
+    initial-value: 0%; /* Initial value of the property */
+}
+
 /* Scoring section styles */
 .scoreCard {
     position: relative; /* Position relative to allow absolute positioning of decorative elements */
@@ -23,7 +32,8 @@
     position: absolute; /* Position absolute to overlay on the score card */
     inset: 0; /* Fill the parent container */
     border-radius: 50%; /* Make it a circle */
-    background: conic-gradient(var(--accent-primary-default) 0% var(--score-pct), var(--color-merino) 0);  /* grident itself draws both colors in one shape */
+    background: conic-gradient(var(--accent-primary-default) 0% var(--score-pct), var(--color-merino) 0);  /* gradient itself draws both colors in one shape */
+    transition: --score-pct 1s ease-out; /* Smooth transition for the score percentage change */
 }
 
 .scoreRingMask {
@@ -32,6 +42,8 @@
     border-radius: 50%; /* Make it a circle */
     background: var(--surface-primary); /* Use the primary surface color for the mask */
 }
+
+
 
 /* Dashed decorative inner border */ 
 .scoreEllipseInsideBorder {
@@ -88,4 +100,11 @@
     gap: var(--space-3); /* 16px gap between children */
     text-align: center; /* Center the text */
     width: 100%; /* Full width of the parent */
+}
+
+/* for users with have a reduced motion preference, disable the animation */
+@media (prefers-reduced-motion: reduce) {
+    .scoreRing {
+        transition: none;
+    }
 }
