@@ -40,7 +40,6 @@ function App() {
     setCurrentScreen('home');
   }
 
-  // retake quiz function could be added here if needed, which would reset the score and total questions but keep the selected topic.
   function retakeQuiz() {
     setScore(0);
     setTotalQuestions(0);
