@@ -146,6 +146,7 @@ After completing the quiz:
 - The screen may display a different status message depending on how the quiz ended:
   - Quiz completed (e.g. Quiz completed!)
   - Time expired (e.g. Time's up!)
+- The Results screen includes a Retake Quiz button that starts a new quiz session for the same topic without returning to Home
   
 
 ## SCREENS
@@ -212,6 +213,7 @@ If confirmed:
 - Quiz status message
 - Feedback message
 - Return Home button
+- Retake Quiz button
 
 ---
 
@@ -240,6 +242,7 @@ React state manages:
 - score
 - remainingTime
 - quizStatus
+- totalQuestions
 
 ---
 
@@ -258,6 +261,7 @@ React state manages:
 - Correct/incorrect visual feedback
 - Question explanations
 - Exit quiz functionality
+- Retake Quiz from the Results screen
 - Score calculation
 - Results screen
 - Responsive design

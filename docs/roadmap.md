@@ -180,6 +180,7 @@ Build simple functional screens without focusing on final styling.
 - Handle completed quiz state
 - Handle expired quiz state
 - Implement Return Home functionality
+- Implement Retake Quiz functionality
 
 ---
 

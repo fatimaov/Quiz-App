@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-The Quiz App is a frontend-only React application built with Vite. Users select a programming topic, complete a timed quiz, receive immediate answer validation, view feedback and explanations, and then see a final results summary.
+The Quiz App is a frontend-only React application built with Vite. Users select a programming topic, complete a timed quiz, receive immediate answer validation, view feedback and explanations, and then see a final results summary. From the Results screen, users can retake the same topic without returning to Home.
 
 MVP exclusions:
 
@@ -149,6 +149,7 @@ Static assets live in `src/assets/`. Current contents:
   - `startQuiz`
   - `incrementScore`
   - `finishQuiz`
+  - `retakeQuiz`
   - `resetQuiz`
 
 Navigation is state-based rather than route-based. Valid screen values are:
@@ -247,6 +248,7 @@ This ensures visual consistency across the application and simplifies future des
 
 - Stores the number of normalized questions loaded for the current quiz
 - Used on the Results screen
+- Reset before a new quiz session starts from either Home or Retake Quiz
 
 ### `score`
 
@@ -262,6 +264,7 @@ This ensures visual consistency across the application and simplifies future des
   - `expired`: the global timer reached zero
 
 The value remains `null` while the quiz is not finished.
+It is reset to `null` when a new quiz session begins, including a Retake Quiz action from the Results screen.
 
 ### QuizScreen.jsx State
 
@@ -331,6 +334,7 @@ The value remains `null` while the quiz is not finished.
 - Displays a performance message based on the user's final score
 - Displays a status message based on quizStatus (e.g. completed or expired)
 - Lets the user return Home and reset the quiz
+- Lets the user retake the quiz for the same topic without returning to Home
 
 ## DATA FLOW
 
@@ -351,7 +355,7 @@ The value remains `null` while the quiz is not finished.
 5. `QuizScreen.jsx` stores randomized questions locally and sends `totalQuestions` upward to `App.jsx`.
 6. Quiz interactions update local quiz state; `QuizScreen.jsx` calls `incrementScore()` on each correct answer and reports final quiz status via `finishQuiz()`, both updating shared state in `App.jsx`.
 7. `App.jsx` switches to `results` when the quiz finishes or expires.
-8. `ResultsScreen.jsx` reads final shared state and offers reset navigation back to `home`.
+8. `ResultsScreen.jsx` reads final shared state and offers either reset navigation back to `home` or a retake action that starts a new quiz session for the same topic.
 
 ## QUIZ FLOW
 
@@ -453,6 +457,18 @@ It receives:
 - Final `score`
 - `totalQuestions`
 - `quizStatus`
+
+### Retake Quiz Flow
+
+When the user clicks Retake Quiz on the Results screen:
+
+1. Keep the current `selectedTopic`.
+2. Reset `score` to `0`.
+3. Reset `totalQuestions` to `0` until the new session loads.
+4. Set `quizStatus` to `null`.
+5. Switch `currentScreen` back to `quiz`.
+6. Reinitialize `QuizScreen.jsx` as a fresh session for the same topic.
+7. Load a new question set for that topic and begin the normal quiz flow again.
 
 ## API LOGIC
 
