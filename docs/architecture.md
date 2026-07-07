@@ -420,20 +420,40 @@ The quiz uses one global countdown timer for the entire session.
 
 Rules:
 
-- The timer starts when the quiz begins successfully with a valid question set
+- The timer starts when `QuizScreen.jsx` mounts and the questions are ready to display
 - The timer remains visible during the quiz
 - The progress bar decreases with `remainingTime`
+- The timer does not control question progression
 - The timer continues running while confirmation modals are open
-- The timer stops when the quiz is completed, expired, or cancelled
+- The timer is implemented as an interval and must be cleaned up with `clearInterval(...)` when the quiz ends, the user exits, or the screen unmounts
 
 When `remainingTime` reaches zero:
 
-1. Set `quizStatus` to `expired`.
-2. Stop the timer.
-3. Count unanswered questions as incorrect.
-4. Move the user to the Results screen.
+1. Stop and clean up the interval.
+2. Prevent `remainingTime` from going below zero.
+3. Set `quizStatus` to `expired`.
+4. Count unanswered questions as incorrect.
+5. Move the user to the Results screen.
 
 No additional score adjustment is required because only correct answers increase `score`.
+
+When the user finishes the last question before time expires:
+
+1. Stop and clean up the interval.
+2. Set `quizStatus` to `completed`.
+3. Move the user to the Results screen.
+
+When the user exits the quiz:
+
+1. Stop and clean up the interval.
+2. Reset the shared quiz state in `App.jsx`.
+3. Return to the Home Screen.
+
+When the user retakes the quiz:
+
+1. `QuizScreen.jsx` unmounts and mounts again as a fresh screen.
+2. `remainingTime` resets automatically because it is local state inside `QuizScreen.jsx`.
+3. The timer starts again only after the new quiz session is ready.
 
 ### Exit Flow
 
