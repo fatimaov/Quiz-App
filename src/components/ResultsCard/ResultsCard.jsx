@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import styles from './ResultsCard.module.css';
-import React, { useState, useEffect } from 'react';
 
 function ResultsCard({ score, totalQuestions }) {
   const percentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
