@@ -8,14 +8,13 @@ function App() {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [score, setScore] = useState(0); 
   const [totalQuestions, setTotalQuestions] = useState(0); 
-  const [quizStatus, setQuizStatus] = useState('idle');
+  const [quizStatus, setQuizStatus] = useState(null); // solely to track the final outcome, (completed or expired), initial value should be null
 
   function startQuiz() {
     if (!selectedTopic) return;
  
     setScore(0);
     setTotalQuestions(0);
-    setQuizStatus('active');
     setCurrentScreen('quiz');
   }
 
@@ -36,14 +35,13 @@ function App() {
     setSelectedTopic(null);
     setScore(0);
     setTotalQuestions(0);
-    setQuizStatus('idle');
     setCurrentScreen('home');
   }
 
   function retakeQuiz() {
     setScore(0);
     setTotalQuestions(0);
-    setQuizStatus('active');
+    setQuizStatus(null); // solely to track the final outcome, (completed or expired), initial value should be nulll
     setCurrentScreen('quiz');
   }
 

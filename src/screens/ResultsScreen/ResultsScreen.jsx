@@ -17,11 +17,11 @@ function ResultsScreen({ score, totalQuestions, onReturnHome, onRetakeQuiz }) {
         <h1 className={styles.headerTitle}>Quiz Complete</h1>
         <ResultsCard score={score} totalQuestions={totalQuestions} />
         <div className={styles.actions}>
-          <Button variant="primary" onClick={onReturnHome}>
-            Return Home <ArrowRightIcon />
-          </Button>
-          <Button variant="secondary" onClick={onRetakeQuiz}>
+          <Button variant="primary" onClick={onRetakeQuiz}>
             Retake Quiz <ArrowRightIcon />
+          </Button>
+          <Button variant="secondary" onClick={onReturnHome}>
+            Return Home <ArrowRightIcon />
           </Button>
         </div>
       </main>
