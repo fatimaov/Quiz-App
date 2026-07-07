@@ -263,8 +263,9 @@ This ensures visual consistency across the application and simplifies future des
   - `completed`: all questions were answered before time expired
   - `expired`: the global timer reached zero
 
-The value remains `null` while the quiz is not finished.
+The value should start as `null` for a new session and remain `null` while the quiz is in progress.
 It is reset to `null` when a new quiz session begins, including a Retake Quiz action from the Results screen.
+`App.jsx` owns the state, `QuizScreen.jsx` updates it through a passed-down setter or callback, and `ResultsScreen.jsx` only reads it.
 
 ### QuizScreen.jsx State
 
@@ -307,6 +308,12 @@ It is reset to `null` when a new quiz session begins, including a Retake Quiz ac
 - Stores loading or API errors
 - API-related errors should not block quiz play if fallback/mock questions are available
 
+### `quizStatus` updates
+
+- `QuizScreen.jsx` should set `quizStatus` to `completed` when the user finishes the last question before time expires
+- `QuizScreen.jsx` should set `quizStatus` to `expired` when the global timer reaches zero
+- `ResultsScreen.jsx` should not mutate `quizStatus`
+
 ## SCREEN RESPONSIBILITIES
 
 ### HomeScreen.jsx
@@ -324,6 +331,7 @@ It is reset to `null` when a new quiz session begins, including a Retake Quiz ac
 - Uses QuizAPI as the primary source and falls back to bundled mock questions if the API is unavailable, errors, or returns no valid questions
 - Reports `totalQuestions` to `App.jsx`
 - Calls `incrementScore()` on each correct answer to update `score` in `App.jsx`
+- Updates `quizStatus` in `App.jsx` when the quiz is completed or expired
 - Manages question progression, answer validation, timer behavior, and exit confirmation
 - Redirects to Results when the quiz is completed or expired
 
@@ -353,7 +361,7 @@ It is reset to `null` when a new quiz session begins, including a Retake Quiz ac
 3. `QuizScreen.jsx` requests questions through `quizApi.js`.
 4. `quizApi.js` fetches, validates, and formats the API response.
 5. `QuizScreen.jsx` stores randomized questions locally and sends `totalQuestions` upward to `App.jsx`.
-6. Quiz interactions update local quiz state; `QuizScreen.jsx` calls `incrementScore()` on each correct answer and reports final quiz status via `finishQuiz()`, both updating shared state in `App.jsx`.
+6. Quiz interactions update local quiz state; `QuizScreen.jsx` calls `incrementScore()` on each correct answer and updates `quizStatus` through the setter or callback passed down from `App.jsx`.
 7. `App.jsx` switches to `results` when the quiz finishes or expires.
 8. `ResultsScreen.jsx` reads final shared state and offers either reset navigation back to `home` or a retake action that starts a new quiz session for the same topic.
 
