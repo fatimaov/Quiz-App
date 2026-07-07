@@ -2,7 +2,7 @@
 
 A programming quiz application built with React and Vite.
 
-Users select a programming topic, complete a timed quiz, receive immediate feedback, and view their final score.
+Users select a programming topic, complete a quiz, receive immediate feedback, and view their final score.
 
 ## Documentation
 
@@ -17,7 +17,6 @@ Please review these documents before starting work on any issue.
 ## Tech Stack
 
 * React
-* JavaScript
 * Vite
 * CSS
 * QuizAPI
@@ -104,28 +103,12 @@ Please keep implementations aligned with the agreed scope and architecture.
 The current MVP includes:
 
 * Topic selection
-* QuizAPI integration
-* Global timer
+* Bundled quiz questions
+* Quiz flow from Home to Results
 * Immediate answer validation
 * Question explanations
 * Results screen
+* Timer UI placeholder
 
 For the complete scope, refer to the PRD.
 
-
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
