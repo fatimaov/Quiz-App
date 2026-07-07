@@ -11,7 +11,7 @@
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
   line-height: var(--lh-tight);
-  transition: background-color 0.15s ease, opacity 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .button svg {
@@ -51,9 +51,22 @@
 }
 
 .secondary {
-  gap: var(--space-2);
-  padding: 0 var(--space-5) 0 0;
-  color: var(--accent-secondary-default);
+  background: var(--action-secondary-bg); 
+  color: var(--action-secondary-text); 
+  border: var(--border-thin) solid var(--accent-secondary-default);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--accent-secondary-subtle);
+}
+
+.secondary:active:not(:disabled){
+  border-color: var(--feedback-warning); 
+}
+
+.secondary:focus-visible {
+  outline: none; 
+  border-color: var(--border-subtle); 
 }
 
 .button:disabled {
@@ -62,17 +75,17 @@
 }
 
 
+.tertiary {
+  gap: var(--space-2); 
+  padding: 0 var(--space-5) 0 0; 
+  color: var(--accent-tertiary-default);
+}
+
 @media (max-width: 768px){
-  .secondary {
+  .tertiary {
     width: auto; 
     padding: 0; 
     font-size: var(--fs-sm);
     text-align: right; 
   }
-}
-
-.tertiary {
-  gap: var(--space-2); 
-  padding: 0 var(--space-5) 0 0; 
-  color: var(--accent-tertiary-default);
 }
