@@ -263,8 +263,9 @@ This ensures visual consistency across the application and simplifies future des
   - `completed`: all questions were answered before time expired
   - `expired`: the global timer reached zero
 
-The value remains `null` while the quiz is not finished.
+The value should start as `null` for a new session and remain `null` while the quiz is in progress.
 It is reset to `null` when a new quiz session begins, including a Retake Quiz action from the Results screen.
+`App.jsx` owns the state, `QuizScreen.jsx` updates it through a passed-down setter or callback, and `ResultsScreen.jsx` only reads it.
 
 ### QuizScreen.jsx State
 
@@ -307,6 +308,12 @@ It is reset to `null` when a new quiz session begins, including a Retake Quiz ac
 - Stores loading or API errors
 - API-related errors should not block quiz play if fallback/mock questions are available
 
+### `quizStatus` updates
+
+- `QuizScreen.jsx` should set `quizStatus` to `completed` when the user finishes the last question before time expires
+- `QuizScreen.jsx` should set `quizStatus` to `expired` when the global timer reaches zero
+- `ResultsScreen.jsx` should not mutate `quizStatus`
+
 ## SCREEN RESPONSIBILITIES
 
 ### HomeScreen.jsx
@@ -324,6 +331,7 @@ It is reset to `null` when a new quiz session begins, including a Retake Quiz ac
 - Uses QuizAPI as the primary source and falls back to bundled mock questions if the API is unavailable, errors, or returns no valid questions
 - Reports `totalQuestions` to `App.jsx`
 - Calls `incrementScore()` on each correct answer to update `score` in `App.jsx`
+- Updates `quizStatus` in `App.jsx` when the quiz is completed or expired
 - Manages question progression, answer validation, timer behavior, and exit confirmation
 - Redirects to Results when the quiz is completed or expired
 
@@ -353,7 +361,7 @@ It is reset to `null` when a new quiz session begins, including a Retake Quiz ac
 3. `QuizScreen.jsx` requests questions through `quizApi.js`.
 4. `quizApi.js` fetches, validates, and formats the API response.
 5. `QuizScreen.jsx` stores randomized questions locally and sends `totalQuestions` upward to `App.jsx`.
-6. Quiz interactions update local quiz state; `QuizScreen.jsx` calls `incrementScore()` on each correct answer and reports final quiz status via `finishQuiz()`, both updating shared state in `App.jsx`.
+6. Quiz interactions update local quiz state; `QuizScreen.jsx` calls `incrementScore()` on each correct answer and updates `quizStatus` through the setter or callback passed down from `App.jsx`.
 7. `App.jsx` switches to `results` when the quiz finishes or expires.
 8. `ResultsScreen.jsx` reads final shared state and offers either reset navigation back to `home` or a retake action that starts a new quiz session for the same topic.
 
@@ -412,20 +420,40 @@ The quiz uses one global countdown timer for the entire session.
 
 Rules:
 
-- The timer starts when the quiz begins successfully with a valid question set
+- The timer starts when `QuizScreen.jsx` mounts and the questions are ready to display
 - The timer remains visible during the quiz
 - The progress bar decreases with `remainingTime`
+- The timer does not control question progression
 - The timer continues running while confirmation modals are open
-- The timer stops when the quiz is completed, expired, or cancelled
+- The timer is implemented as an interval and must be cleaned up with `clearInterval(...)` when the quiz ends, the user exits, or the screen unmounts
 
 When `remainingTime` reaches zero:
 
-1. Set `quizStatus` to `expired`.
-2. Stop the timer.
-3. Count unanswered questions as incorrect.
-4. Move the user to the Results screen.
+1. Stop and clean up the interval.
+2. Prevent `remainingTime` from going below zero.
+3. Set `quizStatus` to `expired`.
+4. Count unanswered questions as incorrect.
+5. Move the user to the Results screen.
 
 No additional score adjustment is required because only correct answers increase `score`.
+
+When the user finishes the last question before time expires:
+
+1. Stop and clean up the interval.
+2. Set `quizStatus` to `completed`.
+3. Move the user to the Results screen.
+
+When the user exits the quiz:
+
+1. Stop and clean up the interval.
+2. Reset the shared quiz state in `App.jsx`.
+3. Return to the Home Screen.
+
+When the user retakes the quiz:
+
+1. `QuizScreen.jsx` unmounts and mounts again as a fresh screen.
+2. `remainingTime` resets automatically because it is local state inside `QuizScreen.jsx`.
+3. The timer starts again only after the new quiz session is ready.
 
 ### Exit Flow
 
