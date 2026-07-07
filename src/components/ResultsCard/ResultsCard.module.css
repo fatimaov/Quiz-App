@@ -43,8 +43,6 @@
     background: var(--surface-primary); /* Use the primary surface color for the mask */
 }
 
-
-
 /* Dashed decorative inner border */ 
 .scoreEllipseInsideBorder {
     position: absolute; /* Position absolute to overlay on the track */
@@ -100,6 +98,7 @@
     gap: var(--space-3); /* 16px gap between children */
     text-align: center; /* Center the text */
     width: 100%; /* Full width of the parent */
+    max-width: 430px; /* set maximum width for resultsCopy */ 
 }
 
 /* for users with have a reduced motion preference, disable the animation */
