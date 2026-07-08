@@ -11,8 +11,6 @@
     }
 }
 
-
-
 .logo{
     height: 44px; 
     width: auto; /* Maintain aspect ratio */
@@ -29,7 +27,6 @@
     align-items: center; 
     gap: var(--space-7); /* 32px gap between children */
     width: 100%; /* Full width of the parent */
-    max-width: 430px; /* Limit the maximum width to 430px */
 }
 
 .headerTitle {
