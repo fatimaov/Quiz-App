@@ -25,7 +25,22 @@
 
 ---
 
-## PHASE 3 — BASIC UI
+## PHASE 3 - APP STATE & NAVIGATION
+
+- Create shared state in App.jsx
+  - currentScreen
+  - selectedTopic
+  - totalQuestions
+  - score
+  - quizStatus
+- Implement state-based navigation
+- Implement `startQuiz()`
+- Implement `finishQuiz()`
+- Implement `resetQuiz()`
+
+---
+
+## PHASE 4 - BASIC UI
 
 Build simple functional screens without focusing on final styling.
 
@@ -51,21 +66,6 @@ Build simple functional screens without focusing on final styling.
 - Display score
 - Display feedback message
 - Display Return Home button
-
----
-
-## PHASE 4 — APP STATE & NAVIGATION
-
-- Create shared state in App.jsx
-  - currentScreen
-  - selectedTopic
-  - totalQuestions
-  - score
-  - quizStatus
-- Implement state-based navigation
-- Implement `startQuiz()`
-- Implement `finishQuiz()`
-- Implement `resetQuiz()`
 
 ---
 
