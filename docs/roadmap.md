@@ -1,215 +1,121 @@
 # QUIZ APP - ROADMAP
 
-## PHASE 1 — PROJECT SETUP
+This roadmap reflects the agreed implementation order, the current repository state, and the existing GitHub issues.
 
-- Create a React project using Vite
-- Clean default Vite files
-- Confirm the app runs locally
-- Create .env.example file
-- Configure QuizAPI environment variable
+Use the GitHub issues as the source of truth for detailed task requirements and acceptance criteria.
 
----
+Status key: Completed | In progress | Pending
 
-## PHASE 2 — PROJECT STRUCTURE
+## Phase 1 - Project Initialization [Completed]
 
-- Create folder structure
-- Create screen components
-  - HomeScreen.jsx
-  - QuizScreen.jsx
-  - ResultsScreen.jsx
-- Create reusable UI components
-- Create API service file
-- Create quiz topics data file
-- Create utility files
-- Create styling structure
+- React and Vite are set up and the initial boilerplate has been cleaned.
+- Base project configuration, `.gitignore`, and `.env.example` are in place.
+- Local setup documentation exists for contributors.
 
----
+## Phase 2 - Project Structure [Completed]
 
-## PHASE 3 - APP STATE & NAVIGATION
+- The app structure is established for screens, components, data, services, utilities, assets, and styles.
+- Core files and folders from the agreed architecture are already present.
+- Shared component and screen entry points are in place.
 
-- Create shared state in App.jsx
-  - currentScreen
-  - selectedTopic
-  - totalQuestions
-  - score
-  - quizStatus
-- Implement state-based navigation
-- Implement `startQuiz()`
-- Implement `finishQuiz()`
-- Implement `resetQuiz()`
+## Phase 3 - Global Styles and Design Tokens [Completed]
 
----
+- `src/styles/globals.css` is connected and provides the global styling foundation.
+- `src/styles/variables.css` defines the shared design tokens.
+- CSS Modules are being used for component and screen styling.
 
-## PHASE 4 - BASIC UI
+## Phase 4 - UI Specifications and Visual Assets [Completed]
 
-Build simple functional screens without focusing on final styling.
+- The MVP UI flow and layout patterns are defined in the Figma-based specifications.
+- Shared logos, topic artwork, icons, and decorative assets are already in the repo.
+- Screen layout decisions are established and reflected in the current UI build.
 
-### Home Screen
+## Phase 5 - App State and Navigation [Completed]
 
-- Display app title
-- Display welcome message
-- Display topic selector
-- Display Start Quiz button
+- `App.jsx` owns the shared quiz state and state-based screen navigation.
+- The main quiz actions exist for selecting a topic, starting a quiz, finishing a quiz, retaking, and resetting.
+- The app currently moves between Home, Quiz, and Results without React Router.
 
-### Quiz Screen
+## Phase 6 - Home Screen [Completed]
 
-- Display quiz title
-- Display question indicator
-- Display question text
-- Display answer options
-- Display Next Question button
-- Display Exit Quiz button
-- Display timer placeholder
+- Topic selection is implemented from `quizTopics.js`.
+- The Start Quiz flow is wired into shared app state.
+- The Home screen UI is built and connected to the current quiz flow.
 
-### Results Screen
+## Phase 7 - Quiz Screen with Mock Data [Completed]
 
-- Display score
-- Display feedback message
-- Display Return Home button
+- The Quiz screen UI is implemented around the agreed component structure.
+- The current quiz flow uses hardcoded mock questions with immediate validation, feedback, explanation, score updates, and question progression.
+- Timer and Exit Quiz behavior are still placeholder-level at this stage.
 
----
+## Phase 8 - Results Screen [Completed]
 
-## PHASE 5 — FALLBACK QUESTIONS
+- The Results screen exists and is connected to the shared quiz flow.
+- Return Home and Retake Quiz actions are present.
+- Most of the Results UI structure is already built, but final result logic is still pending.
 
-- Define the bundled fallback/mock question source for the MVP
-- Ensure each topic has a usable fallback question set
-- Match fallback question structure to the normalized app question shape
-- Use fallback/mock questions when the API is unavailable, returns an error, or provides no valid questions
-- Preserve the normal quiz flow when fallback questions are used
-- Start the timer only after the fallback/mock question set is ready
+## Phase 9 - Fallback Questions [Pending]
 
----
+- Create the topic-based fallback question files in `src/data/fallbackQuestions/`.
+- Use the normalized internal question structure defined in `architecture.md`.
+- Replace the inline mock question source with topic-based fallback loading in the Quiz screen.
 
-## PHASE 6 — QUESTION SOURCE & API RESEARCH
+## Phase 10 - QuizAPI Configuration and Quiz Creation [Pending]
 
-- Confirm available quiz topics in QuizAPI
-- Check if QuizAPI provides enough questions per topic
-- Check if each question includes:
-  - 4 answer options
-  - Correct answer
-  - Explanation
-- Define the fixed number of questions per quiz
-- Determine whether QuizAPI questions can be used directly
-- Verify whether custom QuizAPI questions support explanations
-- Decide the explanation strategy for the MVP
-- Identify any required data transformations
+- Finish QuizAPI research, account configuration, and API validation.
+- Create or select QuizAPI quizzes that match the fallback question structure and answers.
+- Confirm the required question fields, especially explanations, before UI integration.
 
-## PHASE 7 — API INTEGRATION
+## Phase 11 - QuizAPI Service and Quiz Screen Integration [In progress]
 
-- Configure QuizAPI integration
-- Create `quizApi.js` service
-- Fetch questions by topic
-- Normalize API response
-- Validate question structure
-- Handle loading state
-- Handle API errors
-- Trigger fallback/mock questions when no valid API question set is available
+- `src/services/quizApi.js` exists but is still a stub and needs the full service-layer logic from `architecture.md`.
+- Fetch, validate, and normalize QuizAPI responses before the Quiz screen uses them.
+- Connect API questions to the Quiz screen and fall back to bundled local questions when API data is unavailable or unusable.
 
----
+## Phase 12 - Results Screen Finalization [In progress]
 
-## PHASE 8 — QUIZ SESSION SETUP
+- Replace placeholder result content with the final score, total questions, performance messaging, and quiz status.
+- Ensure Return Home and Retake Quiz follow the final quiz data flow.
+- Align the Results screen with the completed and expired quiz outcomes.
 
-- Load questions into QuizScreen
-- Store questions in local state
-- Set totalQuestions
-- Display first question
-- Implement currentQuestionIndex
-- Display question indicator
+## Phase 13 - Global Timer [Pending]
 
----
+- Implement the real countdown timer and timer progress bar.
+- Start the timer only after valid questions are ready.
+- Handle expiration through the shared `quizStatus` flow.
 
-## PHASE 9 — QUESTION & ANSWER RANDOMIZATION
+## Phase 14 - Question and Answer Randomization [Pending]
 
-- Randomize question order
-- Randomize answer order
-- Ensure answer validation uses values instead of indexes
-- Keep randomized order fixed during the session
+- Randomize questions once per session.
+- Randomize answers while preserving correct-answer validation by value.
+- Reuse the shared shuffle utility as part of the final question-loading flow.
 
----
+## Phase 15 - Exit Quiz Modal [In progress]
 
-## PHASE 10 — ANSWER VALIDATION & FEEDBACK
+- Replace the current direct exit action with the confirmation modal flow.
+- Support Continue Quiz and Exit Quiz actions with the correct reset behavior.
+- Keep the timer running while the modal is open.
 
-- Implement answer selection
-- Implement immediate validation
-- Lock answers after validation
-- Display correct answer state
-- Display incorrect answer state
-- Update score
-- Display feedback messages
-- Display explanations
-- Enable Next Question after validation
+## Phase 16 - Error and Empty States [Pending]
 
----
+- Add loading, API error, invalid response, and unavailable-question states.
+- Prevent the quiz from continuing when no valid question source is available.
+- Allow the user to return Home if neither API nor fallback questions can be used.
 
-## PHASE 11 — QUESTION PROGRESSION
+## Phase 17 - UI Polish and Responsiveness [In progress]
 
-- Implement Next Question functionality
-- Reset question state between questions
-- Detect final question
-- Complete quiz when all questions are answered
-- Redirect to Results screen
+- Refine the existing UI to match the approved visual direction across all screens.
+- Complete responsive behavior and consistency passes.
+- Improve accessibility and interaction clarity where needed without changing the agreed layout flow.
 
----
+## Phase 18 - Testing and Refactoring [Pending]
 
-## PHASE 12 — GLOBAL TIMER
+- Test the full application flow from Home to Quiz to Results and back.
+- Test both API-backed and fallback-question flows.
+- Fix bugs, edge cases, and refactor where needed after the remaining MVP features are in place.
 
-- Implement countdown timer
-- Display remaining time
-- Display timer progress bar
-- Handle timer expiration
-- Redirect to Results screen when time reaches zero
+## Phase 19 - Deployment [Pending]
 
----
-
-## PHASE 13 — EXIT QUIZ FLOW
-
-- Create Exit Quiz modal
-- Implement Continue Quiz action
-- Implement Exit Quiz action
-- Ensure timer continues running while modal is open
-- Reset quiz state when exiting
-- Return user to Home screen
-
----
-
-## PHASE 14 — RESULTS SCREEN
-
-- Display score
-- Display score as correct answers / total questions
-- Display performance message
-- Handle completed quiz state
-- Handle expired quiz state
-- Implement Return Home functionality
-- Implement Retake Quiz functionality
-
----
-
-## PHASE 15 — FINAL UI & STYLING
-
-- Create CSS variables
-- Apply color palette
-- Apply typography
-- Improve layout and spacing
-- Style buttons
-- Style answer states
-- Style feedback messages
-- Style timer and progress bar
-- Style modal
-- Improve responsive design
-- Ensure visual consistency
-
----
-
-## PHASE 16 — TESTING & REFINEMENT
-
-- Test full quiz flow
-- Test API integration
-- Test fallback/mock question flow
-- Test score calculation
-- Test question randomization
-- Test answer randomization
-- Test timer behavior
-- Test exit flow
-- Test error handling
-- Fix bugs and edge cases
-- Refactor code where needed
+- Deployment is currently out of scope.
+- The app will not be deployed while the QuizAPI key must be exposed in the frontend.
+- Deployment can be reconsidered later only if the architecture changes.
